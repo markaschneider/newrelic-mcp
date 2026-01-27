@@ -25,7 +25,7 @@ To install or deploy via Smithery, see the official docs: [Deployments](https://
 To install New Relic MCP for Claude Desktop automatically via [Smithery](https://smithery.ai/mcp/newrelic-mcp):
 
 ```bash
-npx @smithery/cli install newrelic-mcp --client claude
+npx @smithery/cli install @cloudbring/newrelic-mcp --client claude
 ```
 
 ### Smithery CLI (recommended)
