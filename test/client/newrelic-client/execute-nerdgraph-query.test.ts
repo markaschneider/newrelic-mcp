@@ -1,6 +1,7 @@
 import type { Mock } from 'vitest';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NewRelicClient } from '../../../src/client/newrelic-client';
+import { getRegionSubdomain } from '../../utils/region-helpers';
 
 const originalFetch = global.fetch;
 
@@ -39,7 +40,7 @@ describe('NewRelicClient.executeNerdGraphQuery', () => {
     const res = result as { data?: { result?: string } };
     expect(res.data?.result).toBe('success');
     expect(global.fetch).toHaveBeenCalledWith(
-      'https://api.newrelic.com/graphql',
+      `https://api${getRegionSubdomain()}.newrelic.com/graphql`,
       expect.objectContaining({ body: expect.stringContaining('variables') })
     );
   });

@@ -51,7 +51,7 @@ npx @smithery/cli build src/server.ts --out .smithery/index.cjs --transport shtt
 npx @smithery/cli inspect @cloudbring/newrelic-mcp
 
 # Run with config (env via JSON)
-npx @smithery/cli run @cloudbring/newrelic-mcp --config '{"NEW_RELIC_API_KEY":"...","NEW_RELIC_ACCOUNT_ID":"..."}'
+npx @smithery/cli run @cloudbring/newrelic-mcp --config '{"NEW_RELIC_API_KEY":"...","NEW_RELIC_ACCOUNT_ID":"...","NEW_RELIC_REGION":"US"}'
 
 # Install into a specific client
 npx @smithery/cli install newrelic-mcp --client claude
@@ -86,7 +86,8 @@ Add to your Claude Desktop configuration file:
       ],
       "env": {
         "NEW_RELIC_API_KEY": "your-api-key-here",
-        "NEW_RELIC_ACCOUNT_ID": "your-account-id"
+        "NEW_RELIC_ACCOUNT_ID": "your-account-id",
+        "NEW_RELIC_REGION": "US"
       }
     }
   }
@@ -109,7 +110,8 @@ Add to your Cline settings in VS Code:
       "args": ["-y", "newrelic-mcp"],
       "env": {
         "NEW_RELIC_API_KEY": "your-api-key-here",
-        "NEW_RELIC_ACCOUNT_ID": "your-account-id"
+        "NEW_RELIC_ACCOUNT_ID": "your-account-id",
+        "NEW_RELIC_REGION": "US"
       }
     }
   ]
@@ -157,7 +159,8 @@ Add to your Windsurf Cascade configuration:
       "args": ["-y", "newrelic-mcp"],
       "env": {
         "NEW_RELIC_API_KEY": "your-api-key-here",
-        "NEW_RELIC_ACCOUNT_ID": "your-account-id"
+        "NEW_RELIC_ACCOUNT_ID": "your-account-id",
+        "NEW_RELIC_REGION": "US"
       }
     }
   }
@@ -193,7 +196,8 @@ npm run build
       "args": ["/path/to/newrelic-mcp/dist/server.js"],
       "env": {
         "NEW_RELIC_API_KEY": "your-api-key-here",
-        "NEW_RELIC_ACCOUNT_ID": "your-account-id"
+        "NEW_RELIC_ACCOUNT_ID": "your-account-id",
+        "NEW_RELIC_REGION": "US"
       }
     }
   }
@@ -208,6 +212,7 @@ npm run build
 
 - `NEW_RELIC_API_KEY` - Your New Relic User API Key (required)
 - `NEW_RELIC_ACCOUNT_ID` - Your New Relic Account ID (optional, can be provided per tool call)
+- `NEW_RELIC_REGION` - New Relic data center region: `US` (default) or `EU` (optional)
 
 ### Getting Your New Relic Credentials
 
@@ -219,6 +224,11 @@ npm run build
 2. **Account ID**:
    - Find your Account ID in the URL when logged into New Relic
    - Or navigate to **Administration** → **Access management** → **Accounts**
+
+3. **Region**:
+   - Set `NEW_RELIC_REGION=US` for US data center (default)
+   - Set `NEW_RELIC_REGION=EU` for EU data center
+   - If not specified, defaults to `US`
 
 For detailed setup instructions, see [docs/new-relic-setup.md](docs/new-relic-setup.md).
 
@@ -304,8 +314,17 @@ If you're having trouble connecting:
 
 1. Verify your API key is valid:
 
+   For US region:
    ```bash
    curl -X POST https://api.newrelic.com/graphql \
+     -H 'Content-Type: application/json' \
+     -H 'API-Key: YOUR_API_KEY' \
+     -d '{"query":"{ actor { user { email } } }"}'
+   ```
+
+   For EU region:
+   ```bash
+   curl -X POST https://api.eu.newrelic.com/graphql \
      -H 'Content-Type: application/json' \
      -H 'API-Key: YOUR_API_KEY' \
      -d '{"query":"{ actor { user { email } } }"}'
@@ -369,6 +388,7 @@ npm install
 ```bash
 NEW_RELIC_API_KEY=your-api-key-here
 NEW_RELIC_ACCOUNT_ID=your-account-id
+NEW_RELIC_REGION=US
 ```
 
 4. Build the project:

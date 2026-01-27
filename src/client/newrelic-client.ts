@@ -1,4 +1,24 @@
-const NERDGRAPH_URL = 'https://api.newrelic.com/graphql';
+/**
+ * New Relic data center region identifier.
+ * Supports US (United States) and EU (Europe) regions.
+ */
+type Region = 'US' | 'EU';
+
+/**
+ * Returns the appropriate NerdGraph API endpoint URL based on the specified region.
+ *
+ * @param region - The New Relic data center region ('US' or 'EU')
+ * @returns The NerdGraph GraphQL API endpoint URL for the specified region
+ */
+function getNerdGraphUrl(region: Region): string {
+  return region === 'EU'
+    ? 'https://api.eu.newrelic.com/graphql'
+    : 'https://api.newrelic.com/graphql';
+}
+
+const NERDGRAPH_URL = getNerdGraphUrl(
+  (process.env.NEW_RELIC_REGION?.toUpperCase() as Region) || 'US'
+);
 
 type GraphQLError = { message: string; [key: string]: unknown };
 type GraphQLResponse<T> = { data?: T; errors?: GraphQLError[] };

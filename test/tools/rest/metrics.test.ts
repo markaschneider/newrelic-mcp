@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { getRegionSubdomain } from '../../utils/region-helpers';
 
 const get = vi.fn();
 vi.mock('../../../src/client/rest-client', () => ({
@@ -18,7 +19,9 @@ describe('REST Metrics Tool', () => {
       .mockResolvedValueOnce({
         status: 200,
         data: [{ metric: 'CPU' }],
-        links: { next: 'https://api.newrelic.com/v2/x?page=2' },
+        links: {
+          next: `https://api${getRegionSubdomain()}.newrelic.com/v2/x?page=2`,
+        },
       })
       .mockResolvedValueOnce({ status: 200, data: [{ metric: 'Memory' }], links: {} });
     const tool = new RestMetricsTool();
@@ -51,7 +54,9 @@ describe('REST Metrics Tool', () => {
       .mockResolvedValueOnce({
         status: 200,
         data: [{ timeslices: [] }],
-        links: { next: 'https://api.newrelic.com/v2/x?page=2' },
+        links: {
+          next: `https://api${getRegionSubdomain()}.newrelic.com/v2/x?page=2`,
+        },
       })
       .mockResolvedValueOnce({ status: 200, data: [{ timeslices: [] }], links: {} });
     const tool = new RestMetricsTool();

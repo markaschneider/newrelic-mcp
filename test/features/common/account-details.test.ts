@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { NewRelicClient } from '../../../src/client/newrelic-client';
 import { NewRelicMCPServer } from '../../../src/server';
+import { getTestRegion } from '../../utils/region-helpers';
 
 describe('Account Details Feature', () => {
   let _server: NewRelicMCPServer;
@@ -12,7 +13,7 @@ describe('Account Details Feature', () => {
       getAccountDetails: vi.fn().mockResolvedValue({
         accountId: '123456',
         name: 'Test Account',
-        region: 'US',
+        region: getTestRegion(),
         status: 'ACTIVE',
       }),
       executeNerdGraphQuery: vi.fn(),
@@ -31,7 +32,7 @@ describe('Account Details Feature', () => {
       expect(result).toBeDefined();
       expect(result.accountId).toBe('123456');
       expect(result.name).toBe('Test Account');
-      expect(result.region).toBe('US');
+      expect(result.region).toBe(getTestRegion());
       expect(result.status).toBe('ACTIVE');
     });
   });

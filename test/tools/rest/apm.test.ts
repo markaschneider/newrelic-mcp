@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { getRegionSubdomain } from '../../utils/region-helpers';
 
 const get = vi.fn();
 vi.mock('../../../src/client/rest-client', () => ({
@@ -18,7 +19,9 @@ describe('REST APM Tool', () => {
       .mockResolvedValueOnce({
         status: 200,
         data: [{ id: 1 }],
-        links: { next: 'https://api.newrelic.com/v2/applications.json?page=2' },
+        links: {
+          next: `https://api${getRegionSubdomain()}.newrelic.com/v2/applications.json?page=2`,
+        },
       })
       .mockResolvedValueOnce({ status: 200, data: [{ id: 2 }], links: {} });
     const tool = new RestApmTool();

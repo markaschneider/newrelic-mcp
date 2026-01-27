@@ -21,6 +21,10 @@
     "NEW_RELIC_ACCOUNT_ID": {
       "description": "Your New Relic account ID (optional, can be provided per tool call)",
       "required": false
+    },
+    "NEW_RELIC_REGION": {
+      "description": "New Relic data center region: US (default) or EU",
+      "required": false
     }
   },
   "tools": [

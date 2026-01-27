@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NewRelicRestClient } from '../../../src/client/rest-client';
+import { getRegionSubdomain, getTestRegion } from '../../utils/region-helpers';
 
 describe('NewRelicRestClient requests', () => {
   const apiKey = 'test-api-key';
@@ -15,7 +16,10 @@ describe('NewRelicRestClient requests', () => {
   });
 
   it('get: returns data and parses Link header', async () => {
-    const client = new NewRelicRestClient({ apiKey, region: 'US' });
+    const client = new NewRelicRestClient({
+      apiKey,
+      region: getTestRegion(),
+    });
     const mockJson = { hello: 'world' };
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
@@ -24,7 +28,7 @@ describe('NewRelicRestClient requests', () => {
       headers: {
         get: (key: string) =>
           key.toLowerCase() === 'link'
-            ? '<https://api.newrelic.com/v2/x?page=2>; rel="next"'
+            ? `<https://api${getRegionSubdomain()}.newrelic.com/v2/x?page=2>; rel="next"`
             : null,
       },
       json: async () => mockJson,
@@ -62,7 +66,9 @@ describe('NewRelicRestClient requests', () => {
     const res = await client.post<any>('/applications/1/deployments', payload);
     expect(res.status).toBe(201);
     expect(res.data).toEqual(mockJson);
-    expect(res.url).toContain('https://api.eu.newrelic.com/v2/applications/1/deployments.json');
+    expect(res.url).toContain(
+      `https://api${getRegionSubdomain()}.newrelic.com/v2/applications/1/deployments.json`
+    );
     expect(mockFetch).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({
@@ -73,7 +79,10 @@ describe('NewRelicRestClient requests', () => {
   });
 
   it('delete: throws on non-2xx', async () => {
-    const client = new NewRelicRestClient({ apiKey, region: 'US' });
+    const client = new NewRelicRestClient({
+      apiKey,
+      region: getTestRegion(),
+    });
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 404,

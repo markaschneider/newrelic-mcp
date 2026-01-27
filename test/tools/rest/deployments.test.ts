@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { getRegionSubdomain } from '../../utils/region-helpers';
 
 // Mock REST client used by REST tools
 const post = vi.fn();
@@ -39,7 +40,9 @@ describe('REST Deployments Tool', () => {
       .mockResolvedValueOnce({
         status: 200,
         data: [{ id: 1 }],
-        links: { next: 'https://api.newrelic.com/v2/applications/1/deployments.json?page=2' },
+        links: {
+          next: `https://api${getRegionSubdomain()}.newrelic.com/v2/applications/1/deployments.json?page=2`,
+        },
       })
       .mockResolvedValueOnce({ status: 200, data: [{ id: 2 }], links: {} });
     const tool = new RestDeploymentsTool();

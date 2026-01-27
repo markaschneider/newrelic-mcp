@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { getRegionSubdomain } from '../../utils/region-helpers';
 
 const get = vi.fn();
 vi.mock('../../../src/client/rest-client', () => ({
@@ -25,7 +26,9 @@ describe('REST Alerts Tool', () => {
       .mockResolvedValueOnce({
         status: 200,
         data: [{ id: 1, priority: 'HIGH', closed_at: 0 }],
-        links: { next: 'https://api.newrelic.com/v2/alerts_incidents.json?page=2' },
+        links: {
+          next: `https://api${getRegionSubdomain()}.newrelic.com/v2/alerts_incidents.json?page=2`,
+        },
       })
       .mockResolvedValueOnce({
         status: 200,

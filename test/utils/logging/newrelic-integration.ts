@@ -1,4 +1,5 @@
 import winston from 'winston';
+import { getTestRegion } from '../region-helpers';
 import { logger as winstonLogger } from './winston-logger';
 
 // New Relic log forwarding configuration
@@ -29,7 +30,7 @@ export class NewRelicTransport extends winston.transports.Stream {
     this.config = {
       batchSize: 100,
       flushInterval: 5000,
-      region: 'US',
+      region: getTestRegion(),
       ...config,
     };
 
@@ -197,7 +198,7 @@ export const createNewRelicLogger = (serviceName: string = 'newrelic-mcp') => {
       new NewRelicTransport({
         apiKey,
         accountId,
-        region: (process.env.NEW_RELIC_REGION as 'US' | 'EU') || 'US',
+        region: getTestRegion(),
       }),
     ],
   });

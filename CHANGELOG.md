@@ -21,6 +21,27 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 
 - Planned: Minor bug fixes and DX improvements
 
+## [2.0.1] - TBD
+
+### Added
+
+- Regional support for NerdGraph API endpoints (US and EU)
+- `NEW_RELIC_REGION` environment variable to configure data center region
+- Region-aware URL selection for all NerdGraph operations
+
+### Changed
+
+- NerdGraph client now dynamically selects endpoint based on `NEW_RELIC_REGION` env var
+- Default region is US if not specified
+- Updated `smithery.json` to document `NEW_RELIC_REGION` environment variable
+- Updated README with examples for both US and EU regions
+- Added test utilities: added region helpers into shared `test/utils/region-helpers.ts`
+
+### Fixed
+
+- Fixed NerdGraph API calls to work correctly for EU region accounts
+- All NerdGraph tools now respect regional configuration
+
 ## [2.0.0] - 2025-08-09
 
 ### Added
@@ -86,7 +107,8 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 
 - Ignored `.cursor/` directory and removed committed files to avoid secret scanning violations.
 
-[Unreleased]: https://github.com/cloudbring/newrelic-mcp/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/cloudbring/newrelic-mcp/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/cloudbring/newrelic-mcp/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/cloudbring/newrelic-mcp/compare/v1.1.2...v2.0.0
 [1.1.2]: https://github.com/cloudbring/newrelic-mcp/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/cloudbring/newrelic-mcp/compare/v1.1.0...v1.1.1
