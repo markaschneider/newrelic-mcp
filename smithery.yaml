@@ -6,3 +6,7 @@ start:
 env:
   NODE_ENV: "production"
 
+# For HTTP transport (remote hosting), use:
+# start:
+#   command: ["node", "dist/http-server.js"]
+#   port: 8000

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Source files (we copy built dist/ instead)
+src/
+
+# Test files
+test/
+*.test.ts
+*.spec.ts
+
+# Development files
+.git/
+.github/
+.vscode/
+.cursor/
+.claude/
+
+# Environment and secrets
+.env
+.env.*
+*.env
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Config files
+.gitignore
+.npmignore
+biome.json
+tsconfig.json
+vitest.config.ts
+smithery.yaml
+
+# Build artifacts
+coverage/
+.nyc_output/
+
+# Misc
+.DS_Store
+*.log

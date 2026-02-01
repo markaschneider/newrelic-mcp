@@ -11,15 +11,17 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 
 ### Added
 
-- Planned: Additional New Relic tools and docs improvements
+- HTTP transport server (`src/http-server.ts`) for hosting on PaaS platforms (Aptible, Heroku)
+- Multi-tenant support: users provide their own New Relic credentials via HTTP headers
+- Dockerfile and Procfile for container deployments
+- Health check endpoint (`/health`) for container orchestration
+- Session management with automatic cleanup for HTTP connections
+- New npm scripts: `dev:http` and `start:http` for HTTP server mode
 
 ### Changed
 
-- Planned: Refinements based on community feedback
-
-### Fixed
-
-- Planned: Minor bug fixes and DX improvements
+- `NewRelicClient` now accepts `region` parameter in constructor for per-request region configuration
+- Exported `Region` type from `newrelic-client.ts` for external use
 
 ## [2.0.1] - TBD
 

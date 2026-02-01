@@ -2,7 +2,7 @@
  * New Relic data center region identifier.
  * Supports US (United States) and EU (Europe) regions.
  */
-type Region = 'US' | 'EU';
+export type Region = 'US' | 'EU';
 
 /**
  * Returns the appropriate NerdGraph API endpoint URL based on the specified region.
@@ -15,10 +15,6 @@ function getNerdGraphUrl(region: Region): string {
     ? 'https://api.eu.newrelic.com/graphql'
     : 'https://api.newrelic.com/graphql';
 }
-
-const NERDGRAPH_URL = getNerdGraphUrl(
-  (process.env.NEW_RELIC_REGION?.toUpperCase() as Region) || 'US'
-);
 
 type GraphQLError = { message: string; [key: string]: unknown };
 type GraphQLResponse<T> = { data?: T; errors?: GraphQLError[] };
@@ -54,10 +50,18 @@ export interface ApmApplication {
 export class NewRelicClient {
   private apiKey: string;
   private defaultAccountId?: string;
+  private region: Region;
+  private nerdGraphUrl: string;
 
-  constructor(apiKey?: string, defaultAccountId?: string) {
+  constructor(apiKey?: string, defaultAccountId?: string, region?: Region) {
     this.apiKey = apiKey || process.env.NEW_RELIC_API_KEY || '';
     this.defaultAccountId = defaultAccountId || process.env.NEW_RELIC_ACCOUNT_ID;
+    this.region = region || (process.env.NEW_RELIC_REGION?.toUpperCase() as Region) || 'US';
+    this.nerdGraphUrl = getNerdGraphUrl(this.region);
+  }
+
+  getRegion(): Region {
+    return this.region;
   }
 
   async validateCredentials(): Promise<boolean> {
@@ -274,7 +278,7 @@ export class NewRelicClient {
       throw new Error('NEW_RELIC_API_KEY environment variable is not set');
     }
 
-    const response = await fetch(NERDGRAPH_URL, {
+    const response = await fetch(this.nerdGraphUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

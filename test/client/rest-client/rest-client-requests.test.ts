@@ -66,9 +66,8 @@ describe('NewRelicRestClient requests', () => {
     const res = await client.post<any>('/applications/1/deployments', payload);
     expect(res.status).toBe(201);
     expect(res.data).toEqual(mockJson);
-    expect(res.url).toContain(
-      `https://api${getRegionSubdomain()}.newrelic.com/v2/applications/1/deployments.json`
-    );
+    // EU region is explicitly set, so URL should contain .eu.
+    expect(res.url).toContain('https://api.eu.newrelic.com/v2/applications/1/deployments.json');
     expect(mockFetch).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run ai:test:*)",
+      "Bash(timeout 3 node:*)",
+      "Bash(npm run format:*)"
+    ]
+  }
+}

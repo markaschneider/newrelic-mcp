@@ -206,6 +206,85 @@ npm run build
 
 </details>
 
+<details>
+<summary>Remote Hosting (Aptible, Heroku, Docker)</summary>
+
+The server includes an HTTP transport mode for hosting on PaaS platforms. This enables multi-tenant usage where each user provides their own New Relic credentials.
+
+#### Build and Run Locally
+
+```bash
+# Build the project
+npm run build
+
+# Run HTTP server locally
+npm run start:http
+# Or for development with hot reload:
+npm run dev:http
+```
+
+The server runs on `PORT` (default 8000) and exposes:
+- `GET /` - Service info
+- `GET /health` - Health check
+- `POST /mcp` - MCP endpoint
+
+#### Deploy to Aptible
+
+1. Create your Aptible app:
+
+```bash
+aptible apps:create newrelic-mcp --environment your-environment
+```
+
+2. Add the Aptible git remote and push:
+
+```bash
+git remote add aptible git@beta.aptible.com:your-environment/newrelic-mcp.git
+git push aptible main
+```
+
+3. Create an HTTPS endpoint in the Aptible dashboard.
+
+#### Deploy to Heroku
+
+```bash
+heroku create your-newrelic-mcp
+git push heroku main
+```
+
+#### Deploy with Docker
+
+```bash
+# Build the image
+docker build -t newrelic-mcp .
+
+# Run the container
+docker run -p 8000:8000 newrelic-mcp
+```
+
+#### Client Configuration
+
+When connecting to the hosted server, clients must provide New Relic credentials via HTTP headers:
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-New-Relic-Api-Key` | Yes | Your New Relic User API Key |
+| `X-New-Relic-Account-Id` | No | Default account ID for tools that require it |
+| `X-New-Relic-Region` | No | `US` (default) or `EU` |
+
+Example with curl:
+
+```bash
+curl -X POST https://your-server.aptible.net/mcp \
+  -H "Content-Type: application/json" \
+  -H "X-New-Relic-Api-Key: NRAK-XXXXXXXXXXXXXXXXXXXX" \
+  -H "X-New-Relic-Account-Id: 1234567" \
+  -H "X-New-Relic-Region: US" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+```
+
+</details>
+
 ## Configuration
 
 ### Required Environment Variables
