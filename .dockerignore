@@ -1,9 +1,6 @@
 # Dependencies
 node_modules/
 
-# Source files (we copy built dist/ instead)
-src/
-
 # Test files
 test/
 *.test.ts
@@ -26,17 +23,17 @@ docs/
 *.md
 !README.md
 
-# Config files
+# Config files (keep tsconfig.json for build)
 .gitignore
 .npmignore
 biome.json
-tsconfig.json
 vitest.config.ts
 smithery.yaml
 
 # Build artifacts
 coverage/
 .nyc_output/
+dist/
 
 # Misc
 .DS_Store
